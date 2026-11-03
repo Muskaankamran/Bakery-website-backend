@@ -95,10 +95,9 @@ async function loginUser(req, res) {
             });
         }
 
-        const isPasswordValid = await bcrypt.compare(
-            password,
-            user.password
-        );
+        const isPasswordValid = user.password
+            ? await bcrypt.compare(password, user.password)
+            : false;
 
         if (!isPasswordValid) {
             return res.status(401).json({
@@ -134,6 +133,17 @@ async function loginUser(req, res) {
     }
 }
 
+function googleAuthCallback(req, res) {
+    const token = jwt.sign(
+        { id: req.user._id, role: req.user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1d" }
+    );
+
+    setAuthCookie(res, token);
+    return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:5173"}/`);
+}
+
 async function getCurrentUser(req, res) {
     try {
         const user = await userModel.findById(req.user.id).select("username email role")
@@ -155,4 +165,4 @@ async function getCurrentUser(req, res) {
     }
 }
 
-export { registerUser, loginUser, getCurrentUser };
+export { registerUser, loginUser, getCurrentUser, googleAuthCallback };

@@ -249,6 +249,11 @@ img { display: block; max-width: 100%; }
 .password-input input { padding-right: 43px; }
 .password-input button { position: absolute; top: 0; right: 0; display: grid; width: 42px; height: 42px; place-items: center; border: 0; background: transparent; color: #80665b; cursor: pointer; }
 .auth-submit { width: 100%; margin-top: 5px; }
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 14px; color: var(--muted); font-size: 9px; }
+.auth-divider::before, .auth-divider::after { flex: 1; height: 1px; background: var(--line); content: ""; }
+.google-auth-button { display: flex; width: 100%; min-height: 42px; align-items: center; justify-content: center; gap: 10px; border: 1px solid #d9cbbf; background: #fffdfa; color: #382a25; font: inherit; font-size: 11px; cursor: pointer; }
+.google-auth-button svg { width: 18px; height: 18px; }
+.google-auth-button:hover { background: #f7f1eb; }
 .auth-switch { margin: 20px 0 0; color: var(--muted); font-size: 10px; text-align: center; }
 .auth-switch a { color: var(--brown); font-weight: 600; text-decoration: underline; }
 .backend-note { padding: 11px 13px; border-left: 2px solid #c39b88; background: #f5eee7; color: #706158; font-size: 10px; line-height: 1.7; }
@@ -516,6 +521,8 @@ img { display: block; max-width: 100%; }
 [data-theme="dark"] .feedback-success { border-color: #536e51; background: #233127; color: #b8d7b4; }
 [data-theme="dark"] .auth-page { background: radial-gradient(ellipse at 18% 20%, #39261d 0, transparent 38%), var(--page-bg); }
 [data-theme="dark"] .auth-form-panel { background: var(--surface); color: var(--ink); }
+[data-theme="dark"] .google-auth-button { border-color: var(--line); background: var(--surface-raised); color: var(--ink); }
+[data-theme="dark"] .google-auth-button:hover { background: var(--surface-soft); }
 [data-theme="dark"] .backend-note,
 [data-theme="dark"] .profile-fields > div,
 [data-theme="dark"] .admin-section-nav a { border-color: var(--line); background: var(--surface-raised); color: var(--muted); }

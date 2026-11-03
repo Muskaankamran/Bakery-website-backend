@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { FiEye, FiEyeOff, FiLock } from "react-icons/fi";
+import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { getApiErrorMessage, showErrorAlert, showSuccessAlert, showValidationAlert } from "../utils/alerts";
+import { backendUrl } from "../api";
 
 export default function AuthPage({ mode }) {
   const isLogin = mode === "login";
   const { login, register } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const googleAuthFailed = new URLSearchParams(location.search).get("google") === "failed";
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -73,6 +76,7 @@ export default function AuthPage({ mode }) {
           <span className="eyebrow">{isLogin ? "Welcome back" : "Join us"}</span>
           <h2>{isLogin ? "Log in" : "Create your account"}</h2>
           {location.state?.notice && <div className="backend-note" role="status">{location.state.notice}</div>}
+          {googleAuthFailed && <div className="backend-note" role="alert">Google sign-in could not be completed. Please try again.</div>}
           <form onSubmit={submit} noValidate>
             {!isLogin && (
               <label className="form-field">
@@ -103,6 +107,15 @@ export default function AuthPage({ mode }) {
               {loading ? "One moment…" : isLogin ? "Log in" : "Create account"}
             </button>
           </form>
+          <div className="auth-divider"><span>or continue with</span></div>
+          <button
+            className="google-auth-button"
+            type="button"
+            onClick={() => window.location.assign(`${backendUrl.replace(/\/+$/, "")}/api/auth/google`)}
+          >
+            <FcGoogle aria-hidden="true" />
+            Continue with Google
+          </button>
           <p className="auth-switch">{isLogin ? "New to Maison Crumb?" : "Already have an account?"}{" "}
             <Link to={isLogin ? "/register" : "/login"}>{isLogin ? "Create an account" : "Log in"}</Link>
           </p>

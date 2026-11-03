@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
+import { passport } from "./config/passport.js";
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js"
 import cartRoutes from "./routes/cart.routes.js"
@@ -16,7 +17,8 @@ const allowedOrigins = new Set(
 
 app.use((req, res, next) => {
     const origin = req.headers.origin;
-    if (origin && !allowedOrigins.has(origin)) {
+    const isGoogleOAuthCallback = req.path === "/api/auth/google/callback";
+    if (origin && !allowedOrigins.has(origin) && !isGoogleOAuthCallback) {
         return res.status(403).json({ message: "Origin not allowed" });
     }
 
@@ -37,6 +39,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(passport.initialize());
 app.use("/api/products", productRoutes)
 app.use("/api/cart", cartRoutes)
 app.use("/api/auth", authRoutes);
